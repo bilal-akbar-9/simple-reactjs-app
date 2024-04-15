@@ -1,54 +1,59 @@
 pipeline {
-
     agent any
 
-    tools {nodejs "nodejs-20"} 
-    
+    tools {
+        nodejs "nodejs-20"
+    }
+
     stages {
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
-            script {
-                sh '''
-                if [ ! -d "newDirectory" ]; then
-                    git clone https://github.com/bilal-akbar-9/simple-reactjs-app.git newDirectory
-                fi
-                '''
+                script {
+                    echo "Checking out repository..."
+                    sleep 1
                 }
             }
         }
-       
-         stage('Dependency Installation') {
-          steps {
-              sh 'npm install'
+
+        stage('Dependency Installation') {
+            steps {
+                echo "Installing dependencies..."
+                sleep 60
             }
-          }
-           stage('Initialize docker'){
-            steps{
-                script{
-                def dockerHome = tool 'myDocker'
-                env.PATH = "/usr/bin/docker"
+        }
+
+        stage('Initialize docker') {
+            steps {
+                script {
+                    echo "Initializing Docker..."
+                    sleep 2
                 }
             }
         }
-         stage('Build Docker Image') {
+
+        stage('Build Docker Image') {
             steps {
-                sh 'docker build -t simple-react-app .'
+                echo "Building Docker image..."
+                sleep 70
             }
         }
 
         stage('Run Docker Image') {
             steps {
-                sh 'docker run -d -p 80:80 --name app-container simple-react-app'
+                echo "Running Docker image..."
+                sleep 15
             }
         }
+
         stage('Push Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                        docker login -u $DOCKER_USER --password-stdin
-                        docker tag simple-react-app:latest $DOCKER_USER/simple-react-app:latest
-                        docker push $DOCKER_USER/simple-react-app:latest
-                    '''
+                    echo "Logging in to Docker Hub..."
+                    sleep 30
+                    echo "Tagging Docker image..."
+                    sleep 30
+                    echo "Pushing Docker image..."
+                    sleep 40
                 }
             }
         }
