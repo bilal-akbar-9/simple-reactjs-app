@@ -10,7 +10,7 @@ pipeline {
             script {
                 sh '''
                 if [ ! -d "newDirectory" ]; then
-                    git clone https://github.com/bilal-akbar-9/simple-reactjs-app.git
+                    git clone https://github.com/bilal-akbar-9/simple-reactjs-app.git newDirectory
                 fi
                 '''
                 }
