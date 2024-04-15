@@ -1,10 +1,6 @@
 pipeline {
     agent any
-
-    tools {
-        nodejs "nodejs-20"
-    }
-
+    
     stages {
         stage('Checkout') {
             steps {
@@ -23,15 +19,6 @@ pipeline {
             steps {
                 sh 'echo "Installing dependencies..."'
                 sh 'npm install'
-            }
-        }
-
-        stage('Initialize docker') {
-            steps {
-                script {
-                    def dockerHome = tool 'myDocker'
-                    env.PATH = "/usr/bin/docker"
-                }
             }
         }
 
