@@ -16,12 +16,20 @@ pipeline {
                 }
             }
         }
-
+       
          stage('Dependency Installation') {
           steps {
               sh 'npm install'
             }
           }
+           stage('Initialize docker'){
+            steps{
+                script{
+                def dockerHome = tool 'myDocker'
+                env.PATH = "/usr/bin/docker"
+                }
+            }
+        }
          stage('Build Docker Image') {
             steps {
                 sh 'docker build -t simple-react-app .'
